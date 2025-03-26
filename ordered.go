@@ -11,8 +11,8 @@ import (
 )
 
 type kvPair[T any] struct {
-	key   string
-	value T
+	Key   string `json:"id"`
+	Value T      `json:"value"`
 }
 
 // OrderedRegistry is a ordered registry. It uses a slice under the hood.
@@ -34,12 +34,12 @@ func (r *OrderedRegistry[T]) Register(id string, obj T) {
 
 	r.mu.Lock()
 	defer r.mu.Unlock()
-	r.objs = append(r.objs, kvPair[T]{key: id, value: obj})
+	r.objs = append(r.objs, kvPair[T]{Key: id, Value: obj})
 }
 
 func (r *OrderedRegistry[T]) findIndex(id string) (i int, ok bool) {
-	return slices.BinarySearchFunc(r.objs, kvPair[T]{key: id}, func(a, b kvPair[T]) int {
-		return strings.Compare(a.key, b.key)
+	return slices.BinarySearchFunc(r.objs, kvPair[T]{Key: id}, func(a, b kvPair[T]) int {
+		return strings.Compare(a.Key, b.Key)
 	})
 }
 
@@ -66,7 +66,7 @@ func (r *OrderedRegistry[T]) Get(id string) (obj T, ok bool) {
 		return
 	}
 
-	return r.objs[i].value, ok
+	return r.objs[i].Value, ok
 }
 
 // Len returns the number of items in the registry.
@@ -83,7 +83,7 @@ func (r *OrderedRegistry[T]) Iter() iter.Seq2[string, T] {
 		defer r.mu.Unlock()
 
 		for _, obj := range r.objs {
-			if !yield(obj.key, obj.value) {
+			if !yield(obj.Key, obj.Value) {
 				return
 			}
 		}
@@ -94,24 +94,14 @@ func (r *OrderedRegistry[T]) Iter() iter.Seq2[string, T] {
 func (r *OrderedRegistry[T]) MarshalJSON() ([]byte, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
-	return json.Marshal(Collect(r))
+	return json.Marshal(r.objs)
 }
 
 // UnmarshalJSON implements the [encoding/json.Unmarshaler] interface.
 func (r *OrderedRegistry[T]) UnmarhsalJSON(data []byte) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
-
-	m := make(map[string]T)
-	if err := json.Unmarshal(data, &m); err != nil {
-		return err
-	}
-
-	for k, v := range m {
-		r.Register(k, v)
-	}
-
-	return nil
+	return json.Unmarshal(data, &r.objs)
 }
 
 // GobEncode implements the [encoding/gob.GobEncoder] interface.
@@ -120,7 +110,7 @@ func (r *OrderedRegistry[T]) GobEncode() ([]byte, error) {
 	defer r.mu.RUnlock()
 
 	var bf bytes.Buffer
-	if err := gob.NewEncoder(&bf).Encode(Collect(r)); err != nil {
+	if err := gob.NewEncoder(&bf).Encode(r.objs); err != nil {
 		return nil, err
 	}
 
@@ -131,15 +121,5 @@ func (r *OrderedRegistry[T]) GobEncode() ([]byte, error) {
 func (r *OrderedRegistry[T]) GobDecode(data []byte) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
-
-	m := make(map[string]T)
-	if err := gob.NewDecoder(bytes.NewReader(data)).Decode(&m); err != nil {
-		return err
-	}
-
-	for k, v := range m {
-		r.Register(k, v)
-	}
-
-	return nil
+	return gob.NewDecoder(bytes.NewReader(data)).Decode(&r.objs)
 }
