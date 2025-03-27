@@ -6,8 +6,8 @@ import (
 	"github.com/MatusOllah/goreg"
 )
 
-func TestStandardRegistry_RegisterAndGet(t *testing.T) {
-	reg := goreg.NewStandardRegistry[int]()
+func TestOrderedRegistry_RegisterAndGet(t *testing.T) {
+	reg := goreg.NewOrderedRegistry[int]()
 	reg.Register("kajsmentke", 42)
 	reg.Register("kozmeker", 69)
 
@@ -19,16 +19,16 @@ func TestStandardRegistry_RegisterAndGet(t *testing.T) {
 	}
 }
 
-func TestStandardRegistry_GetInvalid(t *testing.T) {
-	reg := goreg.NewStandardRegistry[int]()
+func TestOrderedRegistry_GetInvalid(t *testing.T) {
+	reg := goreg.NewOrderedRegistry[int]()
 
 	if _, ok := reg.Get("invalid"); ok {
 		t.Error("expected key to be not found")
 	}
 }
 
-func TestStandardRegistry_Unregister(t *testing.T) {
-	reg := goreg.NewStandardRegistry[int]()
+func TestOrderedRegistry_Unregister(t *testing.T) {
+	reg := goreg.NewOrderedRegistry[int]()
 	reg.Register("kajsmentke", 42)
 	reg.Register("kozmeker", 69)
 
@@ -43,8 +43,8 @@ func TestStandardRegistry_Unregister(t *testing.T) {
 	}
 }
 
-func TestStandardRegistry_Len(t *testing.T) {
-	reg := goreg.NewStandardRegistry[int]()
+func TestOrderedRegistry_Len(t *testing.T) {
+	reg := goreg.NewOrderedRegistry[int]()
 
 	if reg.Len() != 0 {
 		t.Errorf("Expected length 0, got %d", reg.Len())
@@ -66,8 +66,8 @@ func TestStandardRegistry_Len(t *testing.T) {
 	}
 }
 
-func TestStandardRegistry_Iter(t *testing.T) {
-	reg := goreg.NewStandardRegistry[int]()
+func TestOrderedRegistry_Iter(t *testing.T) {
+	reg := goreg.NewOrderedRegistry[int]()
 	reg.Register("kajsmentke", 42)
 	reg.Register("kozmeker", 69)
 
@@ -92,8 +92,8 @@ func TestStandardRegistry_Iter(t *testing.T) {
 	}
 }
 
-func TestStandardRegistry_JSONCodec(t *testing.T) {
-	reg := goreg.NewStandardRegistry[int]()
+func TestOrderedRegistry_JSONCodec(t *testing.T) {
+	reg := goreg.NewOrderedRegistry[int]()
 	reg.Register("kajsmentke", 42)
 	reg.Register("kozmeker", 69)
 
@@ -102,7 +102,7 @@ func TestStandardRegistry_JSONCodec(t *testing.T) {
 		t.Errorf("failed to marshal JSON: %v", err)
 	}
 
-	newReg := goreg.NewStandardRegistry[int]()
+	newReg := goreg.NewOrderedRegistry[int]()
 	if err := newReg.UnmarhsalJSON(data); err != nil {
 		t.Errorf("failed to unmarshal JSON: %v", err)
 	}
@@ -115,8 +115,8 @@ func TestStandardRegistry_JSONCodec(t *testing.T) {
 	}
 }
 
-func TestStandardRegistry_GobCodec(t *testing.T) {
-	reg := goreg.NewStandardRegistry[int]()
+func TestOrderedRegistry_GobCodec(t *testing.T) {
+	reg := goreg.NewOrderedRegistry[int]()
 	reg.Register("kajsmentke", 42)
 	reg.Register("kozmeker", 69)
 
@@ -125,7 +125,7 @@ func TestStandardRegistry_GobCodec(t *testing.T) {
 		t.Errorf("failed to encode gob: %v", err)
 	}
 
-	newReg := goreg.NewStandardRegistry[int]()
+	newReg := goreg.NewOrderedRegistry[int]()
 	if err := newReg.GobDecode(data); err != nil {
 		t.Errorf("failed to decode gob: %v", err)
 	}
