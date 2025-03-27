@@ -28,10 +28,6 @@ func NewOrderedRegistry[T any]() *OrderedRegistry[T] {
 
 // Register registers an object under the ID.
 func (r *OrderedRegistry[T]) Register(id string, obj T) {
-	if any(obj) == nil {
-		return
-	}
-
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.objs = append(r.objs, kvPair[T]{Key: id, Value: obj})
