@@ -21,10 +21,6 @@ func NewStandardRegistry[T any]() *StandardRegistry[T] {
 
 // Register registers an object under the ID.
 func (r *StandardRegistry[T]) Register(id string, obj T) {
-	if any(obj) == nil {
-		return
-	}
-
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.objs[id] = obj
