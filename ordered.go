@@ -72,6 +72,13 @@ func (r *OrderedRegistry[T]) Len() int {
 	return len(r.objs)
 }
 
+// Reset wipes the registry.
+func (r *OrderedRegistry[T]) Reset() {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	r.objs = []kvPair[T]{}
+}
+
 // Iter returns an iterator over key-value pairs. See the [iter] package documentation for more details.
 func (r *OrderedRegistry[T]) Iter() iter.Seq2[string, T] {
 	return func(yield func(string, T) bool) {

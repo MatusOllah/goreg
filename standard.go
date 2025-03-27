@@ -48,6 +48,13 @@ func (r *StandardRegistry[T]) Len() int {
 	return len(r.objs)
 }
 
+// Reset wipes the registry.
+func (r *StandardRegistry[T]) Reset() {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	r.objs = make(map[string]T)
+}
+
 // Iter returns an iterator over key-value pairs. See the [iter] package documentation for more details.
 func (r *StandardRegistry[T]) Iter() iter.Seq2[string, T] {
 	return func(yield func(string, T) bool) {

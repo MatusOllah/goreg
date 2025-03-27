@@ -16,6 +16,9 @@ type Registry[T any] interface {
 	// Len returns the number of items in the registry.
 	Len() int
 
+	// Reset wipes the registry.
+	Reset()
+
 	// Iter returns an iterator over key-value pairs. See the [iter] package documentation for more details.
 	Iter() iter.Seq2[string, T]
 }

@@ -66,6 +66,18 @@ func TestOrderedRegistry_Len(t *testing.T) {
 	}
 }
 
+func TestOrderedRegistry_Reset(t *testing.T) {
+	reg := goreg.NewOrderedRegistry[int]()
+	reg.Register("kajsmentke", 42)
+	reg.Register("kozmeker", 69)
+
+	reg.Reset()
+
+	if reg.Len() != 0 {
+		t.Errorf("Expected length 0, got %d", reg.Len())
+	}
+}
+
 func TestOrderedRegistry_Iter(t *testing.T) {
 	reg := goreg.NewOrderedRegistry[int]()
 	reg.Register("kajsmentke", 42)
