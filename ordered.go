@@ -11,7 +11,7 @@ import (
 )
 
 type kvPair[T any] struct {
-	Key   string `json:"id"`
+	Key   string `json:"key"`
 	Value T      `json:"value"`
 }
 
@@ -76,7 +76,7 @@ func (r *OrderedRegistry[T]) Len() int {
 	return len(r.objs)
 }
 
-// Iter returns an iterator over ID-object (key-value) pairs. See the [iter] package documentation for more details.
+// Iter returns an iterator over key-value pairs. See the [iter] package documentation for more details.
 func (r *OrderedRegistry[T]) Iter() iter.Seq2[string, T] {
 	return func(yield func(string, T) bool) {
 		r.mu.Lock()

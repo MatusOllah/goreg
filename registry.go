@@ -16,6 +16,6 @@ type Registry[T any] interface {
 	// Len returns the number of items in the registry.
 	Len() int
 
-	// Iter returns an iterator over ID-object (key-value) pairs. See the [iter] package documentation for more details.
+	// Iter returns an iterator over key-value pairs. See the [iter] package documentation for more details.
 	Iter() iter.Seq2[string, T]
 }

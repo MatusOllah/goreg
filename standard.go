@@ -48,7 +48,7 @@ func (r *StandardRegistry[T]) Len() int {
 	return len(r.objs)
 }
 
-// Iter returns an iterator over ID-object (key-value) pairs. See the [iter] package documentation for more details.
+// Iter returns an iterator over key-value pairs. See the [iter] package documentation for more details.
 func (r *StandardRegistry[T]) Iter() iter.Seq2[string, T] {
 	return func(yield func(string, T) bool) {
 		r.mu.Lock()

@@ -12,7 +12,7 @@ func Clone[T any](reg Registry[T]) Registry[T] {
 	return new
 }
 
-// Collect collects ID-object (key-value) pairs from the registry into a new map and returns it.
+// Collect collects key-value pairs from the registry into a new map and returns it.
 func Collect[T any](reg Registry[T]) map[string]T {
 	return maps.Collect(reg.Iter())
 }
