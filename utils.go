@@ -29,11 +29,14 @@ func Copy[T any](dst, src Registry[T]) {
 
 // UnregisterFunc unregisters any objects from reg for which del returns true.
 func UnregisterFunc[T any](reg Registry[T], del func(string, T) bool) {
+	new := NewOrderedRegistry[T]()
 	for id, obj := range reg.Iter() {
-		if del(id, obj) {
-			reg.Unregister(id)
+		if !del(id, obj) {
+			new.Register(id, obj)
 		}
 	}
+	reg.Reset()
+	Copy(reg, new)
 }
 
 // Equal reports whether two registries contain the same objects.
