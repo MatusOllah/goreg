@@ -48,6 +48,25 @@ func ExampleStandardRegistry_Len() {
 	// 3
 }
 
+func ExampleStandardRegistry_Reset() {
+	type Thing string
+
+	reg := goreg.NewStandardRegistry[Thing]()
+	reg.Register("door", Thing("Door"))
+	reg.Register("window", Thing("Window"))
+	reg.Register("chair", Thing("Chair"))
+
+	fmt.Println(reg.Len())
+
+	reg.Reset()
+
+	fmt.Println(reg.Len())
+
+	// Output:
+	// 3
+	// 0
+}
+
 func ExampleStandardRegistry_Iter() {
 	type Thing string
 
