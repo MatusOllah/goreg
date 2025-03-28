@@ -116,7 +116,7 @@ func (r *OrderedRegistry[T]) MarshalJSON() ([]byte, error) {
 }
 
 // UnmarshalJSON implements the [encoding/json.Unmarshaler] interface.
-func (r *OrderedRegistry[T]) UnmarhsalJSON(data []byte) error {
+func (r *OrderedRegistry[T]) UnmarshalJSON(data []byte) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	return json.Unmarshal(data, &r.objs)
