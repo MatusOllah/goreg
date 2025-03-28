@@ -1,6 +1,9 @@
 package goreg
 
-import "iter"
+import (
+	"fmt"
+	"iter"
+)
 
 // Registry represents a generic registry.
 type Registry[T any] interface {
@@ -21,4 +24,6 @@ type Registry[T any] interface {
 
 	// Iter returns an iterator over key-value pairs. See the [iter] package documentation for more details.
 	Iter() iter.Seq2[string, T]
+
+	fmt.Stringer
 }
