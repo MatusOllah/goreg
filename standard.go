@@ -56,6 +56,8 @@ func (r *StandardRegistry[T]) Reset() {
 }
 
 // Iter returns an iterator over key-value pairs. See the [iter] package documentation for more details.
+//
+// Note that you should NOT call any other methods in the for loop. It will cause it to lock.
 func (r *StandardRegistry[T]) Iter() iter.Seq2[string, T] {
 	return func(yield func(string, T) bool) {
 		r.mu.Lock()
