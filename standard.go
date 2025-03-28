@@ -4,19 +4,22 @@ import (
 	"bytes"
 	"encoding/gob"
 	"encoding/json"
+	"fmt"
 	"iter"
+	"regexp"
 	"sync"
 )
 
 // StandardRegistry is a standard registry. It uses a map under the hood.
 type StandardRegistry[T any] struct {
-	objs map[string]T
-	mu   sync.RWMutex
+	objs     map[string]T
+	stringRe *regexp.Regexp
+	mu       sync.RWMutex
 }
 
 // NewStandardRegistry creates a new [StandardRegistry].
 func NewStandardRegistry[T any]() *StandardRegistry[T] {
-	return &StandardRegistry[T]{objs: make(map[string]T)}
+	return &StandardRegistry[T]{objs: make(map[string]T), stringRe: regexp.MustCompile(`\{.*?\}`)}
 }
 
 // Register registers an object under the ID.
@@ -71,6 +74,11 @@ func (r *StandardRegistry[T]) Iter() iter.Seq2[string, T] {
 	}
 }
 
+// String returns a string representation of the registry.
+func (r *StandardRegistry[T]) String() string {
+	return r.stringRe.FindString(fmt.Sprintf("%+v", r.objs))
+}
+
 // MarshalJSON implements the [encoding/json.Marshaler] interface.
 func (r *StandardRegistry[T]) MarshalJSON() ([]byte, error) {
 	r.mu.RLock()
@@ -79,7 +87,7 @@ func (r *StandardRegistry[T]) MarshalJSON() ([]byte, error) {
 }
 
 // UnmarshalJSON implements the [encoding/json.Unmarshaler] interface.
-func (r *StandardRegistry[T]) UnmarhsalJSON(data []byte) error {
+func (r *StandardRegistry[T]) UnmarshalJSON(data []byte) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	return json.Unmarshal(data, &r.objs)

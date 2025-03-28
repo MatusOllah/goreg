@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/gob"
 	"encoding/json"
+	"fmt"
 	"iter"
 	"slices"
 	"strings"
@@ -106,6 +107,11 @@ func (r *OrderedRegistry[T]) Iter() iter.Seq2[string, T] {
 			}
 		}
 	}
+}
+
+// String returns a string representation of the registry.
+func (r *OrderedRegistry[T]) String() string {
+	return fmt.Sprintf("%v", r.objs)
 }
 
 // MarshalJSON implements the [encoding/json.Marshaler] interface.
