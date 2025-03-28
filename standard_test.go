@@ -115,7 +115,7 @@ func TestStandardRegistry_JSONCodec(t *testing.T) {
 	}
 
 	newReg := goreg.NewStandardRegistry[int]()
-	if err := newReg.UnmarhsalJSON(data); err != nil {
+	if err := newReg.UnmarshalJSON(data); err != nil {
 		t.Errorf("failed to unmarshal JSON: %v", err)
 	}
 
