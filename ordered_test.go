@@ -134,6 +134,18 @@ func TestOrderedRegistry_Iter(t *testing.T) {
 	}
 }
 
+func TestOrderedRegistry_String(t *testing.T) {
+	reg := goreg.NewOrderedRegistry[int]()
+	reg.Register("kajsmentke", 42)
+	reg.Register("kozmeker", 69)
+
+	s := reg.String()
+	expected := `[{kajsmentke 42} {kozmeker 69}]`
+	if s != expected {
+		t.Errorf("expected %s, got %s", expected, s)
+	}
+}
+
 func TestOrderedRegistry_JSONCodec(t *testing.T) {
 	reg := goreg.NewOrderedRegistry[int]()
 	reg.Register("kajsmentke", 42)

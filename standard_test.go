@@ -104,6 +104,18 @@ func TestStandardRegistry_Iter(t *testing.T) {
 	}
 }
 
+func TestStandardRegistry_String(t *testing.T) {
+	reg := goreg.NewStandardRegistry[int]()
+	reg.Register("kajsmentke", 42)
+	reg.Register("kozmeker", 69)
+
+	s := reg.String()
+	expected := `{"kajsmentke":42, "kozmeker":69}`
+	if s != expected {
+		t.Errorf("expected %s, got %s", expected, s)
+	}
+}
+
 func TestStandardRegistry_JSONCodec(t *testing.T) {
 	reg := goreg.NewStandardRegistry[int]()
 	reg.Register("kajsmentke", 42)
