@@ -185,3 +185,59 @@ func ExampleOrderedRegistry_Iter() {
 	// window = Window
 	// chair = Chair
 }
+
+func ExampleCollect() {
+	type Thing string
+
+	reg := goreg.NewOrderedRegistry[Thing]()
+	reg.Register("door", Thing("Door"))
+	reg.Register("window", Thing("Window"))
+	reg.Register("chair", Thing("Chair"))
+
+	theMap := goreg.Collect(reg)
+
+	fmt.Println(theMap)
+
+	// Output:
+	// map[chair:Chair door:Door window:Window]
+}
+
+func ExampleCopy() {
+	type Thing string
+
+	reg1 := goreg.NewOrderedRegistry[Thing]()
+	reg1.Register("door", Thing("Door"))
+	reg1.Register("window", Thing("Window"))
+
+	reg2 := goreg.NewOrderedRegistry[Thing]()
+	reg2.Register("chair", Thing("Chair"))
+	reg2.Register("microphone", Thing("Microphone"))
+
+	goreg.Copy(reg1, reg2)
+
+	fmt.Println(reg1)
+
+	// Output:
+	// [{door Door} {window Window} {chair Chair} {microphone Microphone}]
+}
+
+func ExampleEqual() {
+	type Thing string
+
+	reg1 := goreg.NewOrderedRegistry[Thing]()
+	reg1.Register("door", Thing("Door"))
+	reg1.Register("window", Thing("Window"))
+
+	reg2 := goreg.NewOrderedRegistry[Thing]()
+	reg2.Register("door", Thing("Door"))
+	reg2.Register("window", Thing("Window"))
+
+	fmt.Println(goreg.Equal(reg1, reg2))
+
+	reg2.Register("chair", Thing("Chair"))
+	fmt.Println(goreg.Equal(reg1, reg2))
+
+	// Output:
+	// true
+	// false
+}
