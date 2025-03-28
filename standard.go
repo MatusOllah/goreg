@@ -76,7 +76,7 @@ func (r *StandardRegistry[T]) Iter() iter.Seq2[string, T] {
 
 // String returns a string representation of the registry.
 func (r *StandardRegistry[T]) String() string {
-	return r.stringRe.FindString(fmt.Sprintf("%+v", r.objs))
+	return r.stringRe.FindString(fmt.Sprintf("%#v", r.objs))
 }
 
 // MarshalJSON implements the [encoding/json.Marshaler] interface.
