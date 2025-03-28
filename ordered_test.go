@@ -27,6 +27,36 @@ func TestOrderedRegistry_GetInvalid(t *testing.T) {
 	}
 }
 
+func TestOrderedRegistry_GetIndex(t *testing.T) {
+	reg := goreg.NewOrderedRegistry[int]()
+	reg.Register("kajsmentke", 42)
+	reg.Register("kozmeker", 69)
+
+	tests := []struct {
+		name        string
+		index       int
+		expectOK    bool
+		expectValue int
+	}{
+		{"Valid index 0", 0, true, 42},
+		{"Valid index 1", 1, true, 69},
+		{"Invalid negative index", -1, false, 0},
+		{"Invalid out-of-bounds index", 2, false, 0},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			val, ok := reg.GetIndex(test.index)
+			if ok != test.expectOK {
+				t.Errorf("expected ok=%v, got %v", test.expectOK, ok)
+			}
+			if ok && val != test.expectValue {
+				t.Errorf("expected value %v, got %v", test.expectValue, val)
+			}
+		})
+	}
+}
+
 func TestOrderedRegistry_Unregister(t *testing.T) {
 	reg := goreg.NewOrderedRegistry[int]()
 	reg.Register("kajsmentke", 42)
