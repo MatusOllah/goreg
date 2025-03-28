@@ -2,16 +2,6 @@ package goreg
 
 import "maps"
 
-// Clone returns a copy of reg. This is a shallow clone:
-// the new keys and values are set using ordinary assignment.
-func Clone[T any](reg Registry[T]) Registry[T] {
-	new := NewOrderedRegistry[T]()
-	for id, obj := range reg.Iter() {
-		new.Register(id, obj)
-	}
-	return new
-}
-
 // Collect collects key-value pairs from the registry into a new map and returns it.
 func Collect[T any](reg Registry[T]) map[string]T {
 	return maps.Collect(reg.Iter())
@@ -25,18 +15,6 @@ func Copy[T any](dst, src Registry[T]) {
 	for id, obj := range src.Iter() {
 		dst.Register(id, obj)
 	}
-}
-
-// UnregisterFunc unregisters any objects from reg for which del returns true.
-func UnregisterFunc[T any](reg Registry[T], del func(string, T) bool) {
-	new := NewOrderedRegistry[T]()
-	for id, obj := range reg.Iter() {
-		if !del(id, obj) {
-			new.Register(id, obj)
-		}
-	}
-	reg.Reset()
-	Copy(reg, new)
 }
 
 // Equal reports whether two registries contain the same objects.

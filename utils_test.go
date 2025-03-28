@@ -6,18 +6,6 @@ import (
 	"github.com/MatusOllah/goreg"
 )
 
-func TestClone(t *testing.T) {
-	reg := goreg.NewStandardRegistry[int]()
-	reg.Register("kajsmentke", 42)
-	reg.Register("kozmeker", 69)
-
-	cloned := goreg.Clone(reg)
-
-	if cloned.Len() != reg.Len() {
-		t.Errorf("expected length %d, got %d", reg.Len(), cloned.Len())
-	}
-}
-
 func TestCollect(t *testing.T) {
 	reg := goreg.NewStandardRegistry[int]()
 	reg.Register("kajsmentke", 42)
@@ -40,20 +28,6 @@ func TestCopy(t *testing.T) {
 
 	if dst.Len() != 2 {
 		t.Errorf("expected dst length 2, got %d", dst.Len())
-	}
-}
-
-func TestUnregisterFunc(t *testing.T) {
-	reg := goreg.NewStandardRegistry[int]()
-	reg.Register("kajsmentke", 42)
-	reg.Register("kozmeker", 69)
-
-	goreg.UnregisterFunc(reg, func(k string, v int) bool {
-		return k == "kajsmentke"
-	})
-
-	if reg.Len() != 1 {
-		t.Errorf("expected length 1, got %d", reg.Len())
 	}
 }
 
