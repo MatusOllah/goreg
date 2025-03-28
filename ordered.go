@@ -65,6 +65,19 @@ func (r *OrderedRegistry[T]) Get(id string) (obj T, ok bool) {
 	return r.objs[i].Value, ok
 }
 
+// GetIndex returns the object under the index.
+func (r *OrderedRegistry[T]) GetIndex(i int) (obj T, ok bool) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	if i < 0 || i >= len(r.objs) {
+		var zero T
+		return zero, false
+	}
+
+	return r.objs[i].Value, true
+}
+
 // Len returns the number of items in the registry.
 func (r *OrderedRegistry[T]) Len() int {
 	r.mu.RLock()
