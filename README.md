@@ -1,6 +1,6 @@
 # 📋 goreg
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/MatusOllah/goreg.svg)](https://pkg.go.dev/github.com/MatusOllah/goreg) [![Go Report Card](https://goreportcard.com/badge/github.com/MatusOllah/goreg)](https://goreportcard.com/report/github.com/MatusOllah/goreg) [![GitHub license](https://img.shields.io/github/license/MatusOllah/goreg)](https://github.com/MatusOllah/goreg/blob/main/LICENSE) [![Made in Slovakia](https://raw.githubusercontent.com/pedromxavier/flag-badges/refs/heads/main/badges/SK.svg)](https://www.youtube.com/watch?v=UqXJ0ktrmh0)
+[![Go Reference](https://pkg.go.dev/badge/github.com/MatusOllah/goreg.svg)](https://pkg.go.dev/github.com/MatusOllah/goreg) [![Go Report Card](https://goreportcard.com/badge/github.com/MatusOllah/goreg)](https://goreportcard.com/report/github.com/MatusOllah/goreg) [![Go](https://github.com/MatusOllah/goreg/actions/workflows/go.yml/badge.svg)](https://github.com/MatusOllah/goreg/actions/workflows/go.yml) [![GitHub license](https://img.shields.io/github/license/MatusOllah/goreg)](https://github.com/MatusOllah/goreg/blob/main/LICENSE) [![Made in Slovakia](https://raw.githubusercontent.com/pedromxavier/flag-badges/refs/heads/main/badges/SK.svg)](https://www.youtube.com/watch?v=UqXJ0ktrmh0)
 
 **goreg** is a lightweight, thread-safe, and generic registry package for Go.
 
