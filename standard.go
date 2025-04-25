@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"iter"
+	"log/slog"
 	"regexp"
 	"sync"
 )
@@ -42,6 +43,15 @@ func (r *StandardRegistry[T]) Get(id string) (obj T, ok bool) {
 	defer r.mu.RUnlock()
 	obj, ok = r.objs[id]
 	return
+}
+
+// MustGet returns the object under the ID and logs error if not found.
+func (r *StandardRegistry[T]) MustGet(id string) T {
+	obj, ok := r.Get(id)
+	if !ok {
+		slog.Error("*goreg.StandardRegistry: object not found", "id", id)
+	}
+	return obj
 }
 
 // Len returns the number of items in the registry.

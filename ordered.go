@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"iter"
+	"log/slog"
 	"slices"
 	"strings"
 	"sync"
@@ -66,6 +67,15 @@ func (r *OrderedRegistry[T]) Get(id string) (obj T, ok bool) {
 	return r.objs[i].Value, ok
 }
 
+// MustGet returns the object under the ID and logs error if not found.
+func (r *OrderedRegistry[T]) MustGet(id string) T {
+	obj, ok := r.Get(id)
+	if !ok {
+		slog.Error("*goreg.OrderedRegistry: object not found", "id", id)
+	}
+	return obj
+}
+
 // GetIndex returns the object under the index.
 func (r *OrderedRegistry[T]) GetIndex(i int) (obj T, ok bool) {
 	r.mu.RLock()
@@ -77,6 +87,15 @@ func (r *OrderedRegistry[T]) GetIndex(i int) (obj T, ok bool) {
 	}
 
 	return r.objs[i].Value, true
+}
+
+// MustGetIndex returns the object under the index and logs error if not found.
+func (r *OrderedRegistry[T]) MustGetIndex(i int) T {
+	obj, ok := r.GetIndex(i)
+	if !ok {
+		slog.Error("*goreg.OrderedRegistry: object by index not found", "i", i)
+	}
+	return obj
 }
 
 // Len returns the number of items in the registry.
