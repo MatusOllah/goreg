@@ -27,3 +27,27 @@ type Registry[T any] interface {
 
 	fmt.Stringer
 }
+
+// A GetIndexRegistry is a registry with a GetIndex method.
+type GetIndexRegistry[T any] interface {
+	Registry[T]
+
+	// GetIndex returns the object under the index.
+	GetIndex(i int) (obj T, ok bool)
+}
+
+// A MustGetRegistry is a registry with a MustGet method.
+type MustGetRegistry[T any] interface {
+	Registry[T]
+
+	// MustGet returns the object under the ID and logs error if not found.
+	MustGet(id string) T
+}
+
+// A MustGetIndexRegistry is a registry with a MustGetIndex method.
+type MustGetIndexRegistry[T any] interface {
+	Registry[T]
+
+	// MustGetIndex returns the object under the index and logs error if not found.
+	MustGetIndex(i int) T
+}
