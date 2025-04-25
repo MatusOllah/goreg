@@ -23,6 +23,7 @@ func Equal[T comparable](reg1, reg2 Registry[T]) bool {
 	if reg1.Len() != reg2.Len() {
 		return false
 	}
+
 	for id, obj1 := range reg1.Iter() {
 		if obj2, ok := reg2.Get(id); !ok || obj1 != obj2 {
 			return false
